@@ -63,7 +63,7 @@ main ()
 
         else 
         {
-            execv(argv[0] , argv);
+            execvp(argv[0] , argv);
             exit(0);
         }
     
