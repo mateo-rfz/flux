@@ -63,7 +63,11 @@ main ()
 
         else 
         {
-            execvp(argv[0] , argv);
+            int re = execvp(argv[0] , argv);
+            if (re == -1) 
+            {
+                write(STDOUT, "error\n" , 6);
+            }
             exit(0);
         }
     
