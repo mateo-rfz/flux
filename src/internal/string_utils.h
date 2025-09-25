@@ -1,6 +1,9 @@
 
 
 
+void f_str_copy (char * s1 , char * s2);
+
+
 int f_strcomp (char * c1 , char * c2);
 char * str_cleaner (char * c);
 int f_strlen (char * c);

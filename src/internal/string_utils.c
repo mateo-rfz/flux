@@ -26,6 +26,22 @@ f_strcomp (char * c1 , char * c2)
 
 
 
+void 
+f_str_copy (char * s1 , char * s2)
+{
+    while (*s1 != '\0')
+    {
+        *s2 = *s1 ;
+        s1++;s2++;
+    }
+}
+
+
+
+
+
+
+
 char * 
 str_clearner (char * c) 
 {
