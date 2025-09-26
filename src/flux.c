@@ -1,9 +1,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "internal/string_utils.h"
+#include "internal/shell_prompt.h"
 
 
 
@@ -11,17 +13,6 @@
 #define STDOUT 1
 #define STDERR 3
 
-
-
-
-/*
- * write shell prompt in command input 
- */
-void 
-shell_prompt () 
-{
-    write(STDOUT , "$>> " , 4);
-}
 
 
 
