@@ -34,13 +34,17 @@ main ()
     /*
      * main loop of program
      */ 
-    while (f_strcomp(input_buffer , "exit")) 
+    while (1) 
     {
         shell_prompt();
 
         clear_buffer (input_buffer , buff_size);
         read(0, input_buffer ,  buff_size);
         trim(input_buffer , buff_size);
+
+        
+        if (f_strcomp(input_buffer, "exit") == 0)
+                exit(0);
 
 
         char * argv[10] = {NULL};
