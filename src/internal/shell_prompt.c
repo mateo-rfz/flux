@@ -1,7 +1,12 @@
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <pwd.h>
+#include <sys/stat.h>
 
 #include "string_utils.h"
+
+
 
 
 
@@ -9,6 +14,10 @@
 #define USERNAME_BUFF_SIZE 50
 #define HOSTNAME_BUFF_SIZE 50
 
+
+
+#define CONFIG_PATH "/home/mateo/.flux.conf"
+//dir address only for test
 
 
 
@@ -20,43 +29,54 @@ void setError ()
 
 
 
-void setUsername (char * username_buffer)
+static void printUsername ()
 {
-    ;
+    uid_t uid = getuid();
+    struct passwd * pw = getpwuid(uid);
+    printf("%s" , pw->pw_name);
+    fflush(stdout);
 }
 
 
-void setHostname (char * hostname_buffer)
+
+
+static void printHostname ()
 {
-    ;
+    char hostname[50];
+    gethostname(hostname , 50);
+    printf("%s" , hostname);
+    fflush(stdout);
 }
 
 
 
 
-void shell_prompt (char * shell_prompt_buffer)
+
+
+void shell_prompt ()
 {
-
-
-
-
     
     char prompt[SHELL_PROMPT_BUFF_SIZE]; 
 
-    if ((access(".flux.conf" , F_OK)) != 0)
+    if (access(CONFIG_PATH , F_OK) != 0)
     {   
-        char * dsp = "%U@%H:~$\0";  // dsp -> default shell prompt
-        f_str_copy(dsp , prompt);
+        f_str_copy("%U@%H:~$ " , prompt);
     }
+
     else 
     {
-        int fd = open(".flux.conf" , O_RDONLY);
+        int fd = open(CONFIG_PATH , O_RDONLY);
 
-        if ((read(fd, prompt , SHELL_PROMPT_BUFF_SIZE)) == -1)
-        {
-            char * dsp = "%U@%H:~$\0";  // dsp -> default shell prompt
-            f_str_copy(dsp , prompt);
-        }
+        // get file size
+        struct stat fs;
+        stat(CONFIG_PATH , &fs);
+
+        int n = read(fd, prompt , fs.st_size - 1);
+        if (n <= 0)
+            f_str_copy("%U@%H:~$ " , prompt);
+        else 
+            prompt[n] = '\0';
+
         close(fd);
     }
 
@@ -72,15 +92,13 @@ void shell_prompt (char * shell_prompt_buffer)
             {
                 case 'U' :
                     {
-                    char username[USERNAME_BUFF_SIZE];
-                    setUsername (username);
+                    printUsername();
                     break;
                     }
 
                 case 'H' : 
                     {
-                    char hostname[HOSTNAME_BUFF_SIZE];
-                    setHostname (hostname);
+                    printHostname ();
                     break;
                     }
 
@@ -88,8 +106,16 @@ void shell_prompt (char * shell_prompt_buffer)
                     setError ();
             }
 
-            tmp_p++;
         }
+         
+        else {
+            write(1, tmp_p, 1);  
+        }
+
+
+
+        tmp_p++;
     }
+
 
 }
