@@ -58,6 +58,10 @@ void shell_prompt ()
     
     char prompt[SHELL_PROMPT_BUFF_SIZE]; 
 
+
+    /*
+     * check for file exist 
+     */
     if (access(CONFIG_PATH , F_OK) != 0)
     {   
         f_str_copy("%U@%H:~$ " , prompt);

@@ -24,6 +24,41 @@ f_strcomp (char * c1 , char * c2)
 
 
 
+int 
+f_string_len (char * s) 
+{
+    int n = 0;
+    while (*s != '\0')
+    {
+        n++;
+        s++;
+    }
+
+    return n;
+}
+
+
+
+
+
+
+
+
+void 
+f_add_to_end (char * s1 , char * s2)
+{
+    while (*s1 != '\0') 
+        ++s1;
+
+    while (*s2 != '\0')
+    {
+        *s1 = *s2;
+        s1++;s2++;
+    }
+    *s1 = '\0';
+}
+
+
 
 
 void 
@@ -34,6 +69,7 @@ f_str_copy (char * s1 , char * s2)
         *s2 = *s1 ;
         s1++;s2++;
     }
+    *s2 = '\0';
 }
 
 

@@ -2,8 +2,9 @@
 
 
 void f_str_copy (char * s1 , char * s2);
+void f_add_to_end (char * s1 , char * s2);
 
-
+int f_string_len(char * s);
 int f_strcomp (char * c1 , char * c2);
 char * str_cleaner (char * c);
 int f_strlen (char * c);
