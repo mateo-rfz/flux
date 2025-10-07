@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 #include "internal/string_utils.h"
 #include "internal/shell_prompt.h"
@@ -16,19 +17,30 @@
 
 
 
+#define INPUT_BUFFER_SIZE 1024
+
 
 
 
 int 
 main () 
 {
-    int buff_size = 1024;
-    char  input_buffer[buff_size];
-    clear_buffer(input_buffer , buff_size);
+    char  input_buffer[INPUT_BUFFER_SIZE];
+    clear_buffer(input_buffer , INPUT_BUFFER_SIZE);
 
 
+    /*
+     * History part for check history file exist
+     */
+    const char * history_file_path = "home/mateo/.flux_history";
+    int check = access(history_file_path, F_OK);
 
-    char current_dir[1024];
+    int fd;
+    if (check != 0)
+        fd = open(history_file_path , O_CREAT|O_WRONLY);
+    else 
+        fd = open(history_file_path , O_WRONLY);
+
 
 
     /*
@@ -38,10 +50,22 @@ main ()
     {
         shell_prompt();
 
-        clear_buffer (input_buffer , buff_size);
-        read(0, input_buffer ,  buff_size);
-        trim(input_buffer , buff_size);
+        clear_buffer (input_buffer , INPUT_BUFFER_SIZE);
+        read(0, input_buffer ,  INPUT_BUFFER_SIZE);
+        trim(input_buffer , INPUT_BUFFER_SIZE);
 
+        /*
+         * History : 
+         * check history file existence if not create 
+         * append input commands in ~/.flux_history
+         */
+        
+        write(fd, input_buffer , f_string_len(input_buffer));
+
+    
+        /*
+         * End of history section
+         */
         
         if (f_strcomp(input_buffer, "exit") == 0)
                 exit(0);
@@ -60,9 +84,8 @@ main ()
         {
             int re = execvp(argv[0] , argv);
             if (re == -1) 
-            {
-                write(STDOUT, "error\n" , 6);
-            }
+                write(STDOUT, "flux : command not found\n" , 25);
+
             exit(0);
         }
     
