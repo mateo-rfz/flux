@@ -30,16 +30,19 @@ main ()
 
 
     /*
-     * History part for check history file exist
+     * check history file existence if not create
      */
-    const char * history_file_path = "home/mateo/.flux_history";
+    const char * history_file_path = "/home/mateo/.flux_history";
     int check = access(history_file_path, F_OK);
 
     int fd;
     if (check != 0)
-        fd = open(history_file_path , O_CREAT|O_WRONLY);
+        fd = open(history_file_path , O_CREAT|O_WRONLY , 0644);
     else 
         fd = open(history_file_path , O_WRONLY);
+    /*
+     * End of history file checker
+     */
 
 
 
@@ -56,17 +59,33 @@ main ()
 
         /*
          * History : 
-         * check history file existence if not create 
          * append input commands in ~/.flux_history
          */
-        
         write(fd, input_buffer , f_string_len(input_buffer));
-
-    
+        write(fd , "\n" , 1); // new line
         /*
          * End of history section
          */
-        
+       
+
+
+
+        /*
+         * condition for show history of flux in output
+         * read history for ~/.flux_history
+         */
+        if (f_strcomp(input_buffer , "history") == 0)
+        {
+
+            /*
+             * TO DO
+             */
+            continue;
+        }
+
+
+
+
         if (f_strcomp(input_buffer, "exit") == 0)
                 exit(0);
 
