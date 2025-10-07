@@ -102,8 +102,12 @@ main ()
         else 
         {
             int re = execvp(argv[0] , argv);
-            if (re == -1) 
-                write(STDOUT, "flux : command not found\n" , 25);
+            if (re == -1)
+            {
+                write(STDOUT , "flux : " , 7);
+                write(STDOUT , input_buffer , f_string_len(input_buffer));
+                write(STDOUT, " command not found\n" , 25);
+            }
 
             exit(0);
         }
