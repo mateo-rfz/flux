@@ -37,9 +37,9 @@ main ()
 
     int fd;
     if (check != 0)
-        fd = open(history_file_path , O_CREAT|O_WRONLY , 0644);
+        fd = open(history_file_path , O_CREAT | O_RDWR | O_APPEND , 0644);
     else 
-        fd = open(history_file_path , O_WRONLY);
+        fd = open(history_file_path , O_RDWR | O_APPEND);
     /*
      * End of history file checker
      */
@@ -51,11 +51,21 @@ main ()
      */ 
     while (1) 
     {
+        /*
+         * read shell prompt config ~/.flux.conf
+         * and write to stdout 
+         */
         shell_prompt();
+
+
+
 
         clear_buffer (input_buffer , INPUT_BUFFER_SIZE);
         read(0, input_buffer ,  INPUT_BUFFER_SIZE);
         trim(input_buffer , INPUT_BUFFER_SIZE);
+
+
+
 
         /*
          * History : 
@@ -76,10 +86,13 @@ main ()
          */
         if (f_strcomp(input_buffer , "history") == 0)
         {
+            lseek(fd, 0, SEEK_SET);
+            char history_buff[518];
+            int n = read(fd, history_buff, 518);
+            history_buff[n] = '\0';
+            printf("%s" , history_buff);
 
-            /*
-             * TO DO
-             */
+            lseek(fd, 0, SEEK_END);
             continue;
         }
 
