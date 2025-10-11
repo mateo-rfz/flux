@@ -159,10 +159,15 @@ void command_spliter(char *input, char **argv)
     int argc = 0;
     int i = 0;
     int start = 0;
+    int flag = 0;
 
     while (input[i] != '\0') 
     {
-        if (input[i] == ' ') 
+        if (input[i] == '"' && flag == 0) 
+            flag = 1;
+        else if (input[i] == '"' && flag == 1)
+            flag = 0;
+        if (input[i] == ' ' && flag == 0) 
         {
             input[i] = '\0';           
             if (i > start)            
