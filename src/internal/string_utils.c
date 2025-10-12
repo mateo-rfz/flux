@@ -6,7 +6,9 @@
  * return 0 on same strings
  * return 1 on differents
  */
+#include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 int 
 f_strcomp (char * c1 , char * c2)
 {
@@ -154,32 +156,44 @@ void trim (char * buffer , int buff_size)
 
 
 
+
+
 void command_spliter(char *input, char **argv)
 {
     int argc = 0;
-    int i = 0;
-    int start = 0;
-    int flag = 0;
+    int in_quotes = 0;
+    char *p = input;
+    char *start = NULL;
 
-    while (input[i] != '\0') 
+    while (*p)
     {
-        if (input[i] == '"' && flag == 0) 
-            flag = 1;
-        else if (input[i] == '"' && flag == 1)
-            flag = 0;
-        if (input[i] == ' ' && flag == 0) 
+        if (isspace(*p) && !in_quotes)
         {
-            input[i] = '\0';           
-            if (i > start)            
-                argv[argc++] = &input[start];
-            start = i + 1;           
+            if (start)
+            {
+                *p = '\0';
+                argv[argc++] = start;
+                start = NULL;
+            }
         }
-        i++;
+        else if (*p == '"')
+        {
+            in_quotes = !in_quotes;
+            memmove(p, p + 1, strlen(p));
+            p--; 
+        }
+        else
+        {
+            if (!start)
+                start = p;
+        }
+        p++;
     }
 
-    if (i > start)
-        argv[argc++] = &input[start];
+    if (start)
+        argv[argc++] = start;
 
-    argv[argc] = NULL;  
+    argv[argc] = NULL;
 }
+
 
