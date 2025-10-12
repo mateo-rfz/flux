@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-#include "internal/string_utils.h"
-#include "internal/shell_prompt.h"
+#include "../include/string_utils.h"
+#include "../include/shell_prompt.h"
+#include "../include/parser.h"
 
 
 
@@ -26,7 +27,7 @@ int
 main () 
 {
     char  input_buffer[INPUT_BUFFER_SIZE];
-    clear_buffer(input_buffer , INPUT_BUFFER_SIZE);
+    u_clear_buffer(input_buffer , INPUT_BUFFER_SIZE);
 
 
     /*
@@ -60,9 +61,9 @@ main ()
 
 
 
-        clear_buffer (input_buffer , INPUT_BUFFER_SIZE);
+        u_clear_buffer (input_buffer , INPUT_BUFFER_SIZE);
         read(0, input_buffer ,  INPUT_BUFFER_SIZE);
-        trim(input_buffer , INPUT_BUFFER_SIZE);
+        u_trim(input_buffer , INPUT_BUFFER_SIZE);
 
 
 
@@ -71,7 +72,7 @@ main ()
          * History : 
          * append input commands in ~/.flux_history
          */
-        write(fd, input_buffer , f_string_len(input_buffer));
+        write(fd, input_buffer , u_strlen(input_buffer));
         write(fd , "\n" , 1); // new line
         /*
          * End of history section
@@ -84,7 +85,7 @@ main ()
          * condition for show history of flux in output
          * read history for ~/.flux_history
          */
-        if (f_strcomp(input_buffer , "history") == 0)
+        if (u_strcomp(input_buffer , "history") == 0)
         {
             lseek(fd, 0, SEEK_SET);
             char history_buff[518];
@@ -99,7 +100,7 @@ main ()
 
 
 
-        if (f_strcomp(input_buffer, "exit") == 0)
+        if (u_strcomp(input_buffer, "exit") == 0)
                 exit(0);
 
 
@@ -118,7 +119,7 @@ main ()
             if (re == -1)
             {
                 write(STDOUT , "flux : " , 7);
-                write(STDOUT , input_buffer , f_string_len(input_buffer));
+                write(STDOUT , input_buffer , u_strlen(input_buffer));
                 write(STDOUT, " command not found\n" , 25);
             }
 
