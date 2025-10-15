@@ -10,7 +10,6 @@
 #include "../include/parser.h"
 
 
-
 #define STDIN  0
 #define STDOUT 1
 #define STDERR 3
@@ -26,6 +25,8 @@
 int 
 main () 
 {
+    char DIR[256] = "/home/mateo/";
+    chdir(DIR);
     char  input_buffer[INPUT_BUFFER_SIZE];
     u_clear_buffer(input_buffer , INPUT_BUFFER_SIZE);
 
@@ -56,7 +57,7 @@ main ()
          * read shell prompt config ~/.flux.conf
          * and write to stdout 
          */
-        shell_prompt();
+        shell_prompt(DIR);
 
 
 
@@ -106,6 +107,29 @@ main ()
 
         char * argv[10] = {NULL};
         command_spliter(input_buffer, argv);
+
+
+        if (u_strcomp("cd" , argv[0]) == 0)
+        {
+            int st = chdir(argv[1]);
+            if (st == 0)
+            {
+                
+                char *pt = DIR;
+                while (*pt != '\0') 
+                {
+                    *pt = '\0';
+                     pt++;
+                }
+
+                strcpy(DIR, argv[1]);
+            }
+
+            else 
+                printf("ERROR %s No such file or directory\n" , argv[1]);
+            continue;
+        }
+            
 
 
         //child pid
