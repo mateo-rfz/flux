@@ -5,6 +5,18 @@
 #define USERNAME_BUFF_SIZE 64
 
 
+
+
+/*
+ * getUsername - get the username of the current user
+ * copies the username of current user (base on uid) into the buffer
+ *
+ * INPUTS : 
+ *      pointer of a array of char buffer
+ *
+ * RETURNS :    
+ *      NONE
+ */
 void getUsername (char * buffer)
 {
     uid_t uid = getuid();
@@ -18,5 +30,6 @@ void getUsername (char * buffer)
 
         buffer++;username++;
     }
+    *buffer = '\0';
 }
 
