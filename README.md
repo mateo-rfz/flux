@@ -17,15 +17,16 @@ It is designed to be **small**, **educational**, and **portable**.
 ## 🧩 Build & Run
 
 ```bash
-git clone https://github.com/yourname/flux.git
-cd flux/src
+git clone https://github.com/mateo-rfz/flux.git
+cd flux/
 make
-./flux
+./build/flux
 ```
 
 Or compile manually:
 ```bash
-gcc -o flux flux.c internal/string_utils.c internal/shell_prompt.c
+cd flux/
+gcc -o flux src/flux.c  src/parser.c  src/shell_prompt.c  src/string_utils.c  src/utilities.c
 ```
 
 ---
@@ -38,7 +39,7 @@ Flux reads your prompt style from:
 
 Example:
 ```
-%U@%H:$ -> usernmae@hostname:$  
+%U@%H:%P$ -> usernmae@hostname:/home/username$  
 ```
 
 Command history is automatically saved to:
@@ -55,7 +56,7 @@ but a tool to **learn** how shells work under the hood: command parsing, forking
 ---
 
 ## 🗺️ Roadmap / TODO
-- [ ] Add built-in commands (`cd`, `pwd`, `clear`)
+- [ ] Add built-in commands (`pwd`, `clear`)
 - [ ] Add command auto-completion
 - [ ] Add colored prompt support
 - [ ] Improve history navigation (arrow keys)
