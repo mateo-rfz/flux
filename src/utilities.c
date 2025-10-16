@@ -1,3 +1,7 @@
+#ifndef UTILITIES
+#define UTILITIES
+
+
 #include <unistd.h>
 #include <pwd.h>
 
@@ -33,3 +37,4 @@ void getUsername (char * buffer)
     *buffer = '\0';
 }
 
+#endif /* UTILITIES */  
