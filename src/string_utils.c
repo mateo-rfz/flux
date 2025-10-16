@@ -10,6 +10,7 @@
  * return 0 on same strings
  * return 1 on differents
  */
+#include <stdatomic.h>
 int 
 u_strcomp (char * c1 , char * c2)
 {
@@ -73,6 +74,8 @@ u_add_t_end (char * s1 , char * s2)
     }
     *s1 = '\0';
 }
+
+
 
 
 
