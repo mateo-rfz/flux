@@ -5,13 +5,13 @@
 #include <sys/stat.h>
 
 #include "../include/string_utils.h"
+#include "../include/utilities.h"
 
 
 
 
 
 #define SHELL_PROMPT_BUFF_SIZE 255
-#define USERNAME_BUFF_SIZE 50
 #define HOSTNAME_BUFF_SIZE 50
 
 
@@ -50,11 +50,26 @@ static void printHostname ()
 
 
 
-
-
-
-void shell_prompt ()
+static void printPath (char * path)
 {
+    printf("%s" , path);
+    fflush(stdout);
+}
+
+
+
+
+
+
+void shell_prompt (char * DIR)
+{
+    char username[USERNAME_BUFF_SIZE];
+    getUsername(username);
+    
+    char config_path[250]; 
+    sprintf(config_path , "/home/%s/.flux.conf" , username);
+
+
     
     char prompt[SHELL_PROMPT_BUFF_SIZE]; 
 
@@ -62,18 +77,18 @@ void shell_prompt ()
     /*
      * check for file exist 
      */
-    if (access(CONFIG_PATH , F_OK) != 0)
+    if (access(config_path , F_OK) != 0)
     {   
         u_strcpy("%U@%H:~$ " , prompt);
     }
 
     else 
     {
-        int fd = open(CONFIG_PATH , O_RDONLY);
+        int fd = open(config_path , O_RDONLY);
 
         // get file size
         struct stat fs;
-        stat(CONFIG_PATH , &fs);
+        stat(config_path , &fs);
 
         int n = read(fd, prompt , fs.st_size - 1);
         if (n <= 0)
@@ -105,6 +120,8 @@ void shell_prompt ()
                     printHostname ();
                     break;
                     }
+                case 'P' : 
+                    printPath (DIR);
 
                 default : 
                     setError ();

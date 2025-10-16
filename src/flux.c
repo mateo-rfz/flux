@@ -8,6 +8,7 @@
 #include "../include/string_utils.h"
 #include "../include/shell_prompt.h"
 #include "../include/parser.h"
+#include "../include/utilities.h"
 
 
 #define STDIN  0
@@ -25,16 +26,29 @@
 int 
 main () 
 {
-    char DIR[256] = "/home/mateo/";
+    char username[USERNAME_BUFF_SIZE];
+    getUsername(username);
+
+
+
+    char DIR[256];
+    sprintf(DIR , "/home/%s/" , username);
     chdir(DIR);
     char  input_buffer[INPUT_BUFFER_SIZE];
     u_clear_buffer(input_buffer , INPUT_BUFFER_SIZE);
 
 
+
+   
+
+
+
     /*
      * check history file existence if not create
      */
-    const char * history_file_path = "/home/mateo/.flux_history";
+    char history_file_path[250];
+    sprintf(history_file_path, "/home/%s/.flux_history" , username);
+
     int check = access(history_file_path, F_OK);
 
     int fd;
