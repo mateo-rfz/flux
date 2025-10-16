@@ -5,18 +5,18 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+
 #include "../include/string_utils.h"
 #include "../include/shell_prompt.h"
 #include "../include/parser.h"
 #include "../include/utilities.h"
 
 
-#define STDIN  0
-#define STDOUT 1
-#define STDERR 3
 
 
-
+#define STDIN 0 
+#define STDOUT 1 
+#define STDERR 2
 
 #define INPUT_BUFFER_SIZE 1024
 
@@ -59,6 +59,9 @@ main ()
     /*
      * End of history file checker
      */
+
+
+
 
 
 
@@ -115,13 +118,17 @@ main ()
 
 
 
+        /*
+         * condition for exit internal command
+         */
         if (u_strcomp(input_buffer, "exit") == 0)
                 exit(0);
 
 
+
+
         char * argv[10] = {NULL};
         command_spliter(input_buffer, argv);
-
 
         if (u_strcomp("cd" , argv[0]) == 0)
         {
@@ -140,7 +147,9 @@ main ()
             }
 
             else 
-                printf("ERROR %s No such file or directory\n" , argv[1]);
+                printf("FLUX : %s No such file or directory\n" , argv[1]);
+
+
             continue;
         }
             
@@ -156,11 +165,10 @@ main ()
             int re = execvp(argv[0] , argv);
             if (re == -1)
             {
-                write(STDOUT , "flux : " , 7);
+                write(STDOUT , "FLUX : " , 7);
                 write(STDOUT , input_buffer , u_strlen(input_buffer));
-                write(STDOUT, " command not found\n" , 25);
+                write(STDOUT , " command not found\n" , 25);
             }
-
             exit(0);
         }
     
