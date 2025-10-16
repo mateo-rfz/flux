@@ -1,3 +1,6 @@
+#ifndef SHELL_PROMPT
+#define SHELL_PROMPT
+
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -10,26 +13,24 @@
 
 
 
-
 #define SHELL_PROMPT_BUFF_SIZE 255
 #define HOSTNAME_BUFF_SIZE 50
 
 
 
-#define CONFIG_PATH "/home/mateo/.flux.conf"
-//dir address only for test
 
 
-
-
-void setError ()
-{
-    ;
-}
-
-
-
-static void printUsername ()
+/* printUsername - print username of current user
+ * print username for current user (by uid)
+ *
+ * INPUTS : 
+ *      NONE
+ *
+ * OUTPUT : 
+ *      NONE
+ */
+static void 
+printUsername ()
 {
     uid_t uid = getuid();
     struct passwd * pw = getpwuid(uid);
@@ -39,8 +40,16 @@ static void printUsername ()
 
 
 
-
-static void printHostname ()
+/* printHostname - print hostname 
+ *
+ * INPUTS : 
+ *      NONE
+ *
+ * OUTPUT : 
+ *      NONE
+ */
+static void 
+printHostname ()
 {
     char hostname[50];
     gethostname(hostname , 50);
@@ -50,7 +59,16 @@ static void printHostname ()
 
 
 
-static void printPath (char * path)
+/* printPath - print current path
+ *
+ * INPUTS : 
+ *      pointer to a char array of buffer
+ *
+ * OUTPUT : 
+ *      NONE
+ */
+static 
+void printPath (char * path)
 {
     printf("%s" , path);
     fflush(stdout);
@@ -61,7 +79,8 @@ static void printPath (char * path)
 
 
 
-void shell_prompt (char * DIR)
+void 
+shell_prompt (char * DIR)
 {
     char username[USERNAME_BUFF_SIZE];
     getUsername(username);
@@ -78,9 +97,7 @@ void shell_prompt (char * DIR)
      * check for file exist 
      */
     if (access(config_path , F_OK) != 0)
-    {   
         u_strcpy("%U@%H:~$ " , prompt);
-    }
 
     else 
     {
@@ -124,19 +141,22 @@ void shell_prompt (char * DIR)
                     printPath (DIR);
 
                 default : 
-                    setError ();
+                    ;
             }
-
         }
          
-        else {
+        else 
             write(1, tmp_p, 1);  
-        }
+        
 
 
 
         tmp_p++;
     }
-
-
 }
+
+
+
+
+
+#endif /* SHELL_PROMPT */
