@@ -135,15 +135,8 @@ main ()
             int st = chdir(argv[1]);
             if (st == 0)
             {
-                
-                char *pt = DIR;
-                while (*pt != '\0') 
-                {
-                    *pt = '\0';
-                     pt++;
-                }
-
-                strcpy(DIR, argv[1]);
+                u_clear_buffer(DIR, 256);
+                char * pwd = getcwd(DIR, 256);
             }
 
             else 
