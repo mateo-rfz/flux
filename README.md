@@ -7,6 +7,7 @@ It is designed to be **small**, **educational**, and **portable**.
 
 ## ✨ Features
 - Flexible and customizable shell prompt (`~/.flux.conf`)
+- You can navigate between directories using the built-in cd command
 - Persistent command history (`~/.flux_history`)
 - Lightweight — depends only on standard C and POSIX system calls
 - Simple command execution via `execvp`
@@ -56,7 +57,6 @@ but a tool to **learn** how shells work under the hood: command parsing, forking
 ---
 
 ## 🗺️ Roadmap / TODO
-- [ ] Add built-in commands (`pwd`, `clear`)
 - [ ] Add command auto-completion
 - [ ] Add colored prompt support
 - [ ] Improve history navigation (arrow keys)
