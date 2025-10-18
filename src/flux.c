@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
 
@@ -26,6 +25,9 @@
 int 
 main () 
 {
+
+
+
     char username[USERNAME_BUFF_SIZE];
     getUsername(username);
 
@@ -95,6 +97,24 @@ main ()
         /*
          * End of history section
          */
+
+
+
+
+
+
+        /*
+         * Internal-command 'pwd'
+         * show current path by getcwd() 
+         */
+        if (u_strcomp(input_buffer , "pwd") == 0)
+        {
+                u_clear_buffer(DIR, 256);
+                char * pwd = getcwd(DIR, 256);
+                write(STDOUT , DIR , u_strlen(DIR)); 
+                write(STDOUT , "\n" , 1); 
+            continue;
+        }
        
 
 
