@@ -104,6 +104,21 @@ main ()
 
 
         /*
+         * Internal-command 'clear'
+         * clear screen with uni-code
+         */
+        if (u_strcomp(input_buffer , "clear") == 0)
+        {
+            write(STDOUT , "\033c" , 3);
+            continue;
+        }
+
+
+
+
+
+
+        /*
          * Internal-command 'pwd'
          * show current path by getcwd() 
          */
