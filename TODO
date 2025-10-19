@@ -1,2 +1,5 @@
+implement * for flux
+set ~ for flux 
+implement right and left row keys 
 implement counter for history
 set history (internal command) for show flux_history file
